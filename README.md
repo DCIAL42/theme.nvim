@@ -6,6 +6,10 @@
 ```lua
 {
     "DCIAL42/theme.nvim",
+    dependencies = {
+        'nvim-telescope/telescope.nvim',
+        'nvim-lua/plenary.nvim',
+    },
     -- set options
     -- opts = {...}
 
