@@ -12,7 +12,7 @@ local set_autocmds = function()
                 theme_file:write(e.match)
                 theme_file:close()
             else
-                vim.health.error("Could not open theme file for writing")
+                vim.notify("Could not open theme file for writing", vim.log.levels.ERROR, { title = "Theme" })
             end
         end,
     })
@@ -23,10 +23,14 @@ local set_autocmds = function()
             local theme_file = io.open(theme_file_path, "r")
             if theme_file then
                 local theme = theme_file:read("*l")
+                if #vim.fn.getcompletion(theme, "color") == 0 then
+                    vim.notify("Most recent theme was removed, failed to load", vim.log.levels.WARN, { title = "Theme" })
+                    return
+                end
                 vim.cmd("colorscheme " .. theme)
                 theme_file:close()
             else
-                vim.health.error("Could not open theme file for reading")
+                vim.notify("Could not open theme file for reading", vim.log.levels.ERROR, { title = "Theme" })
             end
         end,
     })
@@ -92,6 +96,5 @@ M.setup = function(opts)
     end
     vim.g.theme_dc_loaded = 1
 end
-
 
 return M
